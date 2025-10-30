@@ -1,0 +1,13 @@
+Jordan Taylor
+Senior Platform Engineer
+
+Summary
+-------
+Seasoned platform engineer with a passion for building developer tooling and
+scalable infrastructure. Experienced in Python, Kubernetes, and distributed
+systems.
+
+Experience Highlights
+- Led a cross-functional team to modernize CI/CD pipelines.
+- Reduced cloud spend by 25% through workload optimization.
+- Designed observability tooling adopted by 200+ engineers.
