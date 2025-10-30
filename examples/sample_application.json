@@ -1,0 +1,45 @@
+{
+  "candidate": {
+    "full_name": "Jordan Taylor",
+    "email": "jordan.taylor@example.com",
+    "phone": "+1-555-123-4567",
+    "linkedin": "https://www.linkedin.com/in/jordan-taylor",
+    "portfolio": "https://jtaylor.dev",
+    "resume": "{project_root}/resources/sample_resume.txt",
+    "experience_highlights": [
+      "Scaled data ingestion pipelines that processed 1B+ events per day.",
+      "Led a cross-functional team of 6 engineers and designers.",
+      "Delivered a 25% reduction in cloud costs by optimizing workloads."
+    ]
+  },
+  "job": {
+    "title": "Senior Platform Engineer",
+    "company": "Northwind Systems",
+    "location": "Remote (US)",
+    "apply_url": "https://careers.northwind.example/jobs/platform-engineer",
+    "keywords": ["platform", "reliability", "python", "kubernetes"],
+    "description": "Help evolve our developer platform that powers hundreds of internal services."
+  },
+  "application": {
+    "questions": [
+      {
+        "prompt": "Why are you excited about working at Northwind Systems?",
+        "answer_template": "I am inspired by {job[company]}'s focus on empowering developers and see a direct match between the platform work I have led and your mission."
+      },
+      {
+        "prompt": "Describe a recent achievement that demonstrates your impact.",
+        "answer_template": "At my previous role I guided an initiative that {candidate[experience_highlights][0]}"
+      }
+    ],
+    "attachments": [
+      {
+        "label": "Resume",
+        "path": "{candidate[resume]}"
+      },
+      {
+        "label": "Cover Letter",
+        "path": "{project_root}/resources/sample_cover_letter.txt"
+      }
+    ]
+  }
+}
