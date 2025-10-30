@@ -21,6 +21,7 @@ import argparse
 import json
 import re
 import sys
+import zipfile
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from pathlib import Path
@@ -398,6 +399,14 @@ def parse_args(argv: Optional[Iterable[str]] = None) -> argparse.Namespace:
         action="store_true",
         help="Print the generated Markdown instead of writing files.",
     )
+    parser.add_argument(
+        "--zip",
+        type=Path,
+        help=(
+            "Optional path to a zip archive bundling the generated files and any "
+            "existing attachments."
+        ),
+    )
     return parser.parse_args(list(argv) if argv is not None else None)
 
 
@@ -430,6 +439,41 @@ def main(argv: Optional[Iterable[str]] = None) -> int:
 
     print(f"Generated Markdown: {markdown_path}")
     print(f"Generated manifest: {manifest_path}")
+
+    if args.zip:
+        zip_path: Path = args.zip
+        if zip_path.is_dir():
+            zip_path = zip_path / f"{slug}.zip"
+        zip_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+            bundle.write(markdown_path, arcname=f"{slug}/{markdown_path.name}")
+            bundle.write(manifest_path, arcname=f"{slug}/{manifest_path.name}")
+
+            seen_names: set[str] = set()
+            for attachment in application.attachments:
+                attachment_path = Path(attachment.path)
+                if not attachment_path.exists():
+                    continue
+
+                target_name = attachment_path.name
+                if target_name in seen_names:
+                    stem = attachment_path.stem
+                    suffix = attachment_path.suffix
+                    counter = 2
+                    while True:
+                        candidate = f"{stem}_{counter}{suffix}"
+                        if candidate not in seen_names:
+                            target_name = candidate
+                            break
+                        counter += 1
+                seen_names.add(target_name)
+                bundle.write(
+                    attachment_path,
+                    arcname=f"{slug}/attachments/{target_name}",
+                )
+
+        print(f"Packaged bundle: {zip_path}")
 
     missing = [att for att in application.attachments if not att.exists]
     if missing:

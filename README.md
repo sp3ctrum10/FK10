@@ -24,6 +24,17 @@ generates:
    application form. The JSON manifest can be used to track the submission in a
    spreadsheet or job tracker.
 
+5. To package the generated artifacts (and any existing attachments) into a
+   single archive for easy sharing or download, pass the `--zip` flag with a
+   destination path:
+
+   ```bash
+   python job_filler.py --config examples/sample_application.json --output ./out --zip ./out/sample_application.zip
+   ```
+
+   If you provide a directory path to `--zip`, the script automatically names
+   the archive after the generated application slug.
+
 The `examples/` directory includes a starter configuration that demonstrates
 how to compose templated responses, while the `resources/` directory contains
 sample documents referenced by that configuration.
